@@ -1,5 +1,6 @@
 ﻿using Master_of_Fishing.CommandPattern;
 using Master_of_Fishing.Components;
+using Master_of_Fishing.Builder;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,7 +13,8 @@ namespace Master_of_Fishing
     /// </summary>
     public class GameWorld : Game
     {
-        private static GameWorld instance;
+		#region Instance
+		private static GameWorld instance;
 
         public static GameWorld Instance
         {
@@ -25,10 +27,10 @@ namespace Master_of_Fishing
                 return instance;
             }
         }
+		#endregion
 
-        private GraphicsDeviceManager graphics;
+		private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Player player;
 
         public float Deltatime { get; set; }
 
@@ -48,18 +50,13 @@ namespace Master_of_Fishing
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+			// TODO: Add your initialization logic here
 
-            GameObject go = new GameObject();
+			IsMouseVisible = true;
 
-            player = new Player();
+			Director director = new Director(new PlayerBuilder());
 
-            go.AddComponent(player);
-
-            go.AddComponent(new SpriteRenderer());
-
-
-            gameObjects.Add(go);
+            gameObjects.Add(director.Construct());
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
@@ -105,15 +102,14 @@ namespace Master_of_Fishing
                 Exit();
 
             // TODO: Add your update logic here
-
             Deltatime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            InputHandler.Instance.Execute(player);
+
+			InputHandler.Instance.Execute();
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
             }
-
 
             base.Update(gameTime);
         }
@@ -126,9 +122,17 @@ namespace Master_of_Fishing
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+			// TODO: Add your drawing code here
+			spriteBatch.Begin();
 
-            base.Draw(gameTime);
+			for (int i = 0; i < gameObjects.Count; i++)
+			{
+				gameObjects[i].Draw(spriteBatch);
+			}
+
+			spriteBatch.End();
+
+			base.Draw(gameTime);
         }
     }
 }

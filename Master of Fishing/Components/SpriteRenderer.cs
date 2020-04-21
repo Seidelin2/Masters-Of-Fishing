@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Master_of_Fishing.Components
 {
-    class SpriteRenderer : Component
+    public class SpriteRenderer : Component
     {
         public Texture2D Sprite { get; set; }
 
@@ -24,8 +24,12 @@ namespace Master_of_Fishing.Components
             SetSprite(spriteName);
         }
 
+		public SpriteRenderer Clone()
+		{
+			return (SpriteRenderer)this.MemberwiseClone();
+		}
 
-        public void SetSprite(string spriteName)
+		public void SetSprite(string spriteName)
         {
             Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
         }
@@ -38,11 +42,6 @@ namespace Master_of_Fishing.Components
         public override string ToString()
         {
             return "SpriteRenderer";
-        }
-
-        public SpriteRenderer Clone()
-        {
-            return (SpriteRenderer)this.MemberwiseClone();
         }
     }
 }

@@ -9,26 +9,28 @@ using System.Threading.Tasks;
 
 namespace Master_of_Fishing.CommandPattern
 {
-    class InputHandler
+    public class InputHandler
     {
-        private static InputHandler instance;
+		public Player Entity;
+		private Dictionary<Keys, ICommand> keybinds = new Dictionary<Keys, ICommand>();
 
-        public static InputHandler Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new InputHandler();
-                }
-                return instance;
-            }
-        }
+		#region Instance
+		private static InputHandler instance;
 
+		public static InputHandler Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					instance = new InputHandler();
+				}
+				return instance;
+			}
+		}
+		#endregion
 
-        private Dictionary<Keys, ICommand> keybinds = new Dictionary<Keys, ICommand>();
-
-        private InputHandler()
+		private InputHandler()
         {
             keybinds.Add(Keys.D, new MoveCommand(new Vector2(1, 0)));
             keybinds.Add(Keys.A, new MoveCommand(new Vector2(-1, 0)));
@@ -37,7 +39,7 @@ namespace Master_of_Fishing.CommandPattern
 
         }
 
-        public void Execute(Player player)
+        public void Execute()
         {
             KeyboardState keyState = Keyboard.GetState();
 
@@ -45,7 +47,7 @@ namespace Master_of_Fishing.CommandPattern
             {
                 if (keyState.IsKeyDown(key))
                 {
-                    keybinds[key].Execute(player);
+                    keybinds[key].Execute(Entity);
                 }
             }
         }

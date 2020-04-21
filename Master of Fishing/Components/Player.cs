@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Master_of_Fishing.CommandPattern;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,14 @@ using System.Threading.Tasks;
 
 namespace Master_of_Fishing.Components
 {
-    class Player : Component
+    public class Player : Component
     {
         private float speed;
-        //private Vector2 origin;
-        private SpriteRenderer spriteRenderer;
-        private bool canShoot;
-        private float shootTime;
-        private float cooldown = 1;
 
         public Player()
         {
-            this.speed = 100;
-            canShoot = true;
+            this.speed = 300;
+			InputHandler.Instance.Entity = this;
         }
 
         public void Move(Vector2 velocity)
@@ -37,27 +33,18 @@ namespace Master_of_Fishing.Components
         public override void Awake()
         {
             GameObject.Transform.Position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2,
-            GameWorld.Instance.GraphicsDevice.Viewport.Height);
-
-            spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
+            GameWorld.Instance.GraphicsDevice.Viewport.Height / 2);
         }
 
         public override void Start()
         {
-            SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            //sr.SetSprite("INSET SPRITE HERE");
-            //sr.Origin = new Vector2(sr.Sprite.Width / 2, (sr.Sprite.Height / 2) + 40);
+            //sr.Origin = new Vector2(sr.Sprite.Width / 2, (sr.Sprite.Height / 2));
 
         }
 
         public override void Update(GameTime gameTime)
         {
-            shootTime += GameWorld.Instance.Deltatime;
 
-            if (shootTime >= cooldown)
-            {
-                canShoot = true;
-            }
         }
 
         public override string ToString()

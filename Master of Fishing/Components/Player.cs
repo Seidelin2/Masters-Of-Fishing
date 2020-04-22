@@ -45,8 +45,8 @@ namespace Master_of_Fishing.Components
         public override void Start()
         {
             SpriteRenderer sr = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
-            //sr.SetSprite("INSET SPRITE HERE");
-            //sr.Origin = new Vector2(sr.Sprite.Width / 2, (sr.Sprite.Height / 2) + 40);
+            sr.SetSprite("Pixel");
+            sr.Origin = new Vector2(sr.Sprite.Width / 2, (sr.Sprite.Height / 2) + 40);
 
         }
 
